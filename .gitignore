@@ -1,6 +1,7 @@
 *.iml
 .gradle
 .idea
+.idea/deploymentTargetDropDown.xml
 /local.properties
 .DS_Store
 /build

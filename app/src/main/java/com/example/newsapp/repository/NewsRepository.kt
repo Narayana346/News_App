@@ -1,19 +1,18 @@
 package com.example.newsapp.repository
 
-import com.example.newsapp.api.RetrofitInstance
-import com.example.newsapp.db.ArticleDatabase
+import androidx.lifecycle.LiveData
 import com.example.newsapp.models.Article
+import com.example.newsapp.models.NewsResponse
+import retrofit2.Response
 
-class NewsRepository(private val db:ArticleDatabase) {
-    suspend fun getHeadlines(countryCode: String, pageNumber:Int) =
-        RetrofitInstance.api.getHeadlines(countryCode,pageNumber)
+interface NewsRepository {
+    suspend fun getHeadlines(countryCode: String, pageNumber:Int): Response<NewsResponse>
 
-    suspend fun searchNews(searchQuery: String,pageNumber:Int) =
-        RetrofitInstance.api.searchForNews(searchQuery,pageNumber)
+    suspend fun searchNews(searchQuery: String,pageNumber:Int): Response<NewsResponse>
 
-    suspend fun upsert(article: Article) = db.getArticleDao().upsert(article)
+    suspend fun upsert(article: Article):Unit
 
-    fun getFavoriteNews() = db.getArticleDao().getAllArticles()
+    fun getFavoriteNews(): LiveData<List<Article>>
 
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+    suspend fun deleteArticle(article: Article):Unit
 }
