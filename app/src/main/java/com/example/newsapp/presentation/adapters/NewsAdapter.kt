@@ -1,4 +1,4 @@
-package com.example.newsapp.adapters
+package com.example.newsapp.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
-import com.example.newsapp.models.Article
+import com.example.newsapp.data.models.Article
 
 class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     private lateinit var articleImage: ImageView
@@ -36,7 +36,7 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): NewsAdapter.ArticleViewHolder {
+    ): ArticleViewHolder {
         return ArticleViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_news,parent,false)
         )
@@ -47,7 +47,7 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     }
     private var onItemClickListener:((Article) -> Unit)? = null
 
-    override fun onBindViewHolder(holder: NewsAdapter.ArticleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
 
         articleImage = holder.itemView.findViewById(R.id.articleImage)

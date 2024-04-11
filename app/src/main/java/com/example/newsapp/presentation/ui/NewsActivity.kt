@@ -1,18 +1,13 @@
-package com.example.newsapp.ui
+package com.example.newsapp.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.newsapp.R
 import com.example.newsapp.databinding.ActivityNewsBinding
-import com.example.newsapp.db.ArticleDatabase
-import com.example.newsapp.repository.NewsRepository
-import com.example.newsapp.repository.NewsRepositoryImp
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @AndroidEntryPoint
 class NewsActivity : AppCompatActivity(){

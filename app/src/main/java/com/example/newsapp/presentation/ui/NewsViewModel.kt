@@ -1,4 +1,4 @@
-package com.example.newsapp.ui
+package com.example.newsapp.presentation.ui
 
 import android.app.Application
 import android.content.Context
@@ -7,9 +7,9 @@ import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.models.Article
-import com.example.newsapp.models.NewsResponse
-import com.example.newsapp.repository.NewsRepository
+import com.example.newsapp.data.models.Article
+import com.example.newsapp.data.models.NewsResponse
+import com.example.newsapp.domain.repository.NewsRepository
 import com.example.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,11 +21,11 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(app: Application, private val newsRepository: NewsRepository):AndroidViewModel(app){
     val headlines:MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var headlinesPage = 1
-    private var headlinesResponse:NewsResponse? = null
+    private var headlinesResponse: NewsResponse? = null
 
     val searchNews:MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
-    private var searchNewsResponse:NewsResponse? = null
+    private var searchNewsResponse: NewsResponse? = null
     private var newSearchQuery:String? = null
     private var oldSearchQuery:String? = null
     init {

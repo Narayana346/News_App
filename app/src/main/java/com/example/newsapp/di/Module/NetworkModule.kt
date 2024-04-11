@@ -1,6 +1,6 @@
 package com.example.newsapp.di.Module
 
-import com.example.newsapp.api.NewsAPI
+import com.example.newsapp.data.api.NewsAPI
 import com.example.newsapp.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -40,5 +40,5 @@ object NetworkModule {
     fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor()
 
     @Provides
-    fun providesNewsApi(retrofit: Retrofit):NewsAPI = retrofit.create(NewsAPI::class.java)
+    fun providesNewsApi(retrofit: Retrofit): NewsAPI = retrofit.create(NewsAPI::class.java)
 }

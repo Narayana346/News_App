@@ -1,8 +1,9 @@
-package com.example.newsapp.ui.fragments
+package com.example.newsapp.presentation.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AbsListView
@@ -10,38 +11,31 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.adapters.NewsAdapter
-import com.example.newsapp.databinding.FragmentSearchBinding
-import com.example.newsapp.ui.NewsActivity
-import com.example.newsapp.ui.NewsViewModel
-import com.example.newsapp.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
+import com.example.newsapp.presentation.adapters.NewsAdapter
+import com.example.newsapp.databinding.FragmentHeadlinesBinding
+import com.example.newsapp.presentation.ui.NewsActivity
+import com.example.newsapp.presentation.ui.NewsViewModel
 import com.example.newsapp.util.Resource
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Suppress("NAME_SHADOWING")
-class SearchFragment : Fragment(R.layout.fragment_search) {
-    private lateinit var newsAdapter: NewsAdapter
+class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
     lateinit var newsViewModel: NewsViewModel
+    private lateinit var newsAdapter: NewsAdapter
     private lateinit var retryButton: Button
-    private lateinit var errorText: TextView
-    private lateinit var itemSearchError: CardView
-    lateinit var binding: FragmentSearchBinding
+    private lateinit var errorText:TextView
+    private lateinit var itemHeadlineError: CardView
+    private lateinit var binding: FragmentHeadlinesBinding
 
-    @SuppressLint("InflateParams", "SuspiciousIndentation")
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchBinding.bind(view)
+        binding = FragmentHeadlinesBinding.bind(view)
 
-        itemSearchError = view.findViewById(R.id.itemSearchError)
+        itemHeadlineError = view.findViewById(R.id.itemHeadlinesError)
 
         val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view:View = inflater.inflate(R.layout.item_error,null)
@@ -50,29 +44,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         errorText = view.findViewById(R.id.errorText)
 
         newsViewModel = (activity as NewsActivity).newsViewModel
-            setupSearchRecycler()
+        setupHeadlinesRecycler()
 
         newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article",it)
             }
-            findNavController().navigate(R.id.action_searchFragment_to_articleFragment,bundle)
+            findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment,bundle)
         }
-
-        var job:Job? = null
-        binding.searchEdit.addTextChangedListener {editable ->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(SEARCH_NEWS_TIME_DELAY)
-                editable?.let {
-                    if(editable.toString().isNotEmpty()){
-                        newsViewModel.searchNews(editable.toString())
-                    }
-                }
-            }
-        }
-
-        newsViewModel.searchNews.observe(viewLifecycleOwner) { response ->
+        newsViewModel.headlines.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success<*> -> {
                     hideProgressBar()
@@ -81,9 +61,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages =
                             newsResponse.totalResults / com.example.newsapp.util.Constants.QUERY_PAGE_SIZE
-                        isLastPage = newsViewModel.searchNewsPage == totalPages
+                        isLastPage = newsViewModel.headlinesPage == totalPages
                         if (isLastPage) {
-                            binding.recyclerSearch.setPadding(0, 0, 0, 0)
+                            binding.recyclerHeadlines.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -103,14 +83,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         retryButton.setOnClickListener{
-            if(binding.searchEdit.text.toString().isNotEmpty()){
-                newsViewModel.searchNews(binding.searchEdit.text.toString())
-            }else{
-                hideErrorMessage()
-            }
+            newsViewModel.getHeadlines("us")
         }
     }
-
     var isError = false
     var isLoading = false
     var isLastPage = false
@@ -127,12 +102,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun hideErrorMessage(){
-        itemSearchError.visibility = View.INVISIBLE
+        itemHeadlineError.visibility = View.INVISIBLE
         isError = false
     }
 
     private fun showErrorMessage(message:String){
-        itemSearchError.visibility = View.VISIBLE
+        itemHeadlineError.visibility = View.VISIBLE
         errorText.text = message
         isError = true
     }
@@ -155,7 +130,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 isNoErrors && isNotLoadingAndNoteLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                newsViewModel.searchNews(binding.searchEdit.text.toString())
+                newsViewModel.getHeadlines("us")
                 isScrolling = false
             }
         }
@@ -169,14 +144,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun setupSearchRecycler(){
+    @SuppressLint("SuspiciousIndentation")
+    private fun setupHeadlinesRecycler(){
         newsAdapter = NewsAdapter()
-        binding.recyclerSearch.apply {
+        binding.recyclerHeadlines.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@SearchFragment.scrollListener)
+                addOnScrollListener(this@HeadlinesFragment.scrollListener)
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.fragments
+package com.example.newsapp.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.adapters.NewsAdapter
+import com.example.newsapp.presentation.adapters.NewsAdapter
 import com.example.newsapp.databinding.FragmentFavouritesBinding
-import com.example.newsapp.ui.NewsActivity
-import com.example.newsapp.ui.NewsViewModel
+import com.example.newsapp.presentation.ui.NewsActivity
+import com.example.newsapp.presentation.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
 
 

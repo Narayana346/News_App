@@ -1,14 +1,14 @@
-package com.example.newsapp.repository
+package com.example.newsapp.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.newsapp.api.NewsAPI
-import com.example.newsapp.db.ArticleDAO
-import com.example.newsapp.db.ArticleDatabase
-import com.example.newsapp.models.Article
-import com.example.newsapp.models.NewsResponse
+import com.example.newsapp.data.api.NewsAPI
+import com.example.newsapp.data.db.ArticleDAO
+import com.example.newsapp.data.models.Article
+import com.example.newsapp.data.models.NewsResponse
+import com.example.newsapp.domain.repository.NewsRepository
 import retrofit2.Response
 
-class NewsRepositoryImp(private val dao:ArticleDAO, private val api : NewsAPI):NewsRepository {
+class NewsRepositoryImp(private val dao: ArticleDAO, private val api : NewsAPI): NewsRepository {
     override suspend fun getHeadlines(countryCode: String, pageNumber:Int): Response<NewsResponse> {
        return api.getHeadlines(countryCode, pageNumber)
     }

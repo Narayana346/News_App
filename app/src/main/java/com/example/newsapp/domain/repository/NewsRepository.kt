@@ -1,8 +1,8 @@
-package com.example.newsapp.repository
+package com.example.newsapp.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.newsapp.models.Article
-import com.example.newsapp.models.NewsResponse
+import com.example.newsapp.data.models.Article
+import com.example.newsapp.data.models.NewsResponse
 import retrofit2.Response
 
 interface NewsRepository {

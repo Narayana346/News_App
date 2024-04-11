@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/headlinesFragment"
-        android:name="com.example.newsapp.ui.fragments.HeadlinesFragment"
+        android:name="com.example.newsapp.presentation.ui.fragments.HeadlinesFragment"
         android:label="HeadlinesFragment">
         <action
             android:id="@+id/action_headlinesFragment_to_articleFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.example.newsapp.ui.fragments.FavouritesFragment"
+        android:name="com.example.newsapp.presentation.ui.fragments.FavouritesFragment"
         android:label="FavouritesFragment">
         <action
             android:id="@+id/action_favouritesFragment_to_articleFragment"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.newsapp.ui.fragments.SearchFragment"
+        android:name="com.example.newsapp.presentation.ui.fragments.SearchFragment"
         android:label="SearchFragment">
         <action
             android:id="@+id/action_searchFragment_to_articleFragment"
@@ -32,10 +32,10 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.example.newsapp.ui.fragments.ArticleFragment"
+        android:name="com.example.newsapp.presentation.ui.fragments.ArticleFragment"
         android:label="ArticleFragment" >
         <argument
             android:name="article"
-            app:argType="com.example.newsapp.models.Article" />
+            app:argType="com.example.newsapp.data.models.Article" />
     </fragment>
 </navigation>
